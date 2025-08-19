@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Story Weaver</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <h1 class="app-title">AI ~ Story Weaver ~</h1>
+    <div class="book-container">
+        <div class="page left-page">
+            <form id="controls-form" autocomplete="off">
+                <!-- Hidden inputs to prevent autocomplete -->
+                <input type="text" name="username" style="display:none;">
+                <input type="password" name="password" style="display:none;">
+
+                <div class="controls-layout">
+                    <div class="mode-switcher">
+                        <button type="button" class="mode-tab active" data-mode="story">Story</button>
+                        <button type="button" class="mode-tab" data-mode="research">Research</button>
+                        <button type="button" class="mode-tab" data-mode="novelist">Novelist</button>
+                        <button type="button" class="mode-tab" data-mode="chat">Chat</button>
+                        <button type="button" class="mode-tab" data-mode="maps">Maps</button>
+                        <button type="button" class="mode-tab" data-mode="cafe">Cafe</button>
+                        <button type="button" class="mode-tab" data-mode="agent">Agent</button>
+                    </div>
+
+                    <!-- Story Weaver Controls -->
+                    <div id="story-controls">
+                        <h2>Story Controls</h2>
+                        <div class="control-grid">
+                            <div class="control-group">
+                                <label for="grade-level">Grade Level<span class="tooltip">Select the target reading level for the story.</span></label>
+                                <select id="grade-level" name="grade-level">
+                                    <option value="k">Kindergarten</option>
+                                    <option value="1">1st Grade</option>
+                                    <option value="2">2nd Grade</option>
+                                    <option value="3">3rd Grade</option>
+                                    <option value="4">4th Grade</option>
+                                    <option value="5">5th Grade</option>
+                                    <option value="6">6th Grade</option>
+                                    <option value="7">7th Grade</option>
+                                    <option value="8">8th Grade</option>
+                                    <option value="9">9th Grade</option>
+                                    <option value="10">10th Grade</option>
+                                    <option value="11">11th Grade</option>
+                                    <option value="12">12th Grade</option>
+                                    <option value="freshman">College Freshman</option>
+                                    <option value="sophomore">College Sophomore</option>
+                                    <option value="junior">College Junior</option>
+                                    <option value="senior">College Senior</option>
+                                    <option value="grad">Graduate</option>
+                                    <option value="adult">Adult</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label for="fiction-type">Story Type<span class="tooltip">Choose between a fictional narrative or a factual account.</span></label>
+                                <select id="fiction-type" name="fiction-type">
+                                    <option value="fiction">Fiction</option>
+                                    <option value="non-fiction">Non-Fiction</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-grid">
+                            <div class="control-group">
+                                <label for="genre">Genre<span class="tooltip">Select the category or style of the story.</span></label>
+                                <select id="genre" name="genre"></select>
+                            </div>
+                             <div class="control-group">
+                                <label for="story-length">Story Length<span class="tooltip">Choose the approximate desired length for the text.</span></label>
+                                <select id="story-length" name="story-length">
+                                    <option value="short">Short (approx. 150 words)</option>
+                                    <option value="medium">Medium (approx. 300 words)</option>
+                                    <option value="long">Long (approx. 500+ words)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group full-width">
+                            <label for="topic">Topic or Question<span class="tooltip">Enter the main subject of your story, or ask a question.</span></label>
+                            <input type="text" id="topic" name="topic" placeholder="e.g., 'a lost puppy' or 'what is a black hole?'" autocomplete="off">
+                        </div>
+                        <div class="control-group">
+                            <label for="ai-title-toggle">Generate Title with AI<span class="tooltip">Let the AI create a title, otherwise your topic will be used as the title.</span></label>
+                            <label class="switch">
+                                <input type="checkbox" id="ai-title-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Research Controls -->
+                    <div id="research-controls" style="display: none;">
+                        <h2>Research Controls</h2>
+                        <div class="control-grid">
+                            <div class="control-group">
+                                <label for="research-subject">Subject</label>
+                                <select id="research-subject" name="research-subject">
+                                    <option value="astronomy">Astronomy</option>
+                                    <option value="biology">Biology</option>
+                                    <option value="history">History</option>
+                                    <option value="geography">Geography</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="art">Art</option>
+                                    <option value="music">Music</option>
+                                    <option value="literature">Literature</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label for="research-format">Output Format</label>
+                                <select id="research-format" name="research-format">
+                                    <option value="report">Report</option>
+                                    <option value="timeline">Timeline</option>
+                                    <option value="key-facts">Key Facts</option>
+                                    <option value="image-gallery">Image Gallery</option>
+                                </select>
+                            </div>
+                        </div>
+                         <div class="control-group full-width">
+                            <label for="research-topic">Research Topic or Question</label>
+                            <input type="text" id="research-topic" name="research-topic" placeholder="e.g., 'Mars' or 'Roman Empire'">
+                        </div>
+                    </div>
+
+                    <!-- Novelist Controls -->
+                    <div id="novelist-controls" style="display: none;">
+                        <h2>Novelist Controls</h2>
+                        <p>Welcome to the Novelist workspace. Load a story from your bookshelf or start writing on the right page. Highlight text and use the Revision Loom to get AI assistance.</p>
+                        <button type="button" class="revision-loom-button" id="open-revision-loom-btn">Open The Revision Loom</button>
+                        <hr class="separator">
+                        <h3>Writer's Notebook</h3>
+                        <textarea id="notebook" rows="8" placeholder="Jot down notes, character ideas, or plot points here..."></textarea>
+                    </div>
+
+                    <!-- Chat Controls -->
+                    <div id="chat-controls" style="display: none;">
+                        <h2>Chat Controls</h2>
+                        <button type="button" class="modal-button" id="open-persona-menu-btn">Select a Persona</button>
+                        <div class="control-group full-width">
+                            <label for="custom-persona">Or, Create Your Own Persona</label>
+                            <input type="text" id="custom-persona" placeholder="e.g., a cheerful pirate captain">
+                        </div>
+                        <button type="button" class="loom-button" id="chat-loom-btn">Customize Style</button>
+                    </div>
+
+                    <!-- Map Controls -->
+                    <div id="map-controls" style="display: none;">
+                        <h2>Map Controls</h2>
+                        <div class="control-group full-width">
+                            <label for="location-input">Enter a Location</label>
+                            <input type="text" id="location-input" placeholder="e.g., Eiffel Tower, Paris">
+                        </div>
+                        <button type="button" class="modal-button" id="find-location-btn" style="margin-bottom: 10px;">Find on Map</button>
+                        <button type="button" class="generate-button" id="generate-map-story-btn">Generate Story from this Location</button>
+                    </div>
+                    
+                    <!-- Cafe Controls -->
+                    <div id="cafe-controls" style="display: none;">
+                        <h2>Cafe Ambience</h2>
+                        <p>Select a station to begin playing some background music.</p>
+                        <button type="button" class="modal-button" id="open-music-menu-btn">Open Music Menu</button>
+                        <div id="music-player-controls">
+                            <button type="button" id="play-pause-btn">&#9658;</button>
+                            <button type="button" id="next-track-btn">&#9658;&#9658;|</button>
+                        </div>
+                        <div class="control-group" style="margin-top: 20px;">
+                            <label for="volume-slider">Volume</label>
+                            <input type="range" id="volume-slider" min="0" max="1" value="0.5" step="0.01">
+                        </div>
+                        <div id="now-playing">Select a station from the menu</div>
+                    </div>
+                    
+                    <!-- Agent Controls -->
+                    <div id="agent-controls" style="display: none;">
+                        <h2>Agent Controls</h2>
+                        <p>Give the Agent a high-level goal. It will analyze the request and create a plan to achieve it using the app's tools.</p>
+                        <div class="control-group full-width">
+                            <label for="agent-goal">Your Goal</label>
+                            <textarea id="agent-goal" rows="4" placeholder="e.g., 'Write a short, spooky story about a lighthouse in Maine.'"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Shared Controls -->
+                    <hr class="separator" id="shared-controls-separator">
+                    <div id="shared-controls-container">
+                        <div class="control-grid">
+                            <div class="control-group">
+                                <label for="content-type">Content Type<span class="tooltip">"Common Core" aligns with educational standards. "NSFW" allows mature themes.</span></label>
+                                <select id="content-type" name="content-type">
+                                    <option value="core">Common Core</option>
+                                    <option value="nsfw">NSFW (Adult Themes)</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label for="llm-model">Language Model<span class="tooltip">Choose the AI model. The required API key will be highlighted in Settings.</span></label>
+                                <select id="llm-model" name="llm-model">
+                                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro</option>
+                                    <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash</option>
+                                    <option value="openai-gpt-4o">OpenAI GPT-4o</option>
+                                    <option value="openai-gpt-3.5-turbo">OpenAI GPT-3.5 Turbo</option>
+                                    <option value="deepseek-chat">Deepseek Chat</option>
+                                    <option value="deepseek-coder">Deepseek Coder</option>
+                                    <option value="grok-llama3-8b">Grok LLaMA-3 8B</option>
+                                    <option value="grok-llama3-70b">Grok LLaMA-3 70B</option>
+                                    <option value="huggingface-meta-llama/Meta-Llama-3-8B-Instruct">HF Llama 3</option>
+                                    <option value="huggingface-meta-llama/Llama-3.1-8B-Instruct">HF Llama 3.1</option>
+                                    <option value="huggingface-HuggingFaceH4/zephyr-7b-beta">HF Zephyr 7B (Beta)</option>
+                                </select>
+                            </div>
+                        </div>
+                         <div class="control-grid">
+                            <div class="control-group">
+                                <label for="show-illustration">Show Illustrations<span class="tooltip">Embed illustrations in the story.</span></label>
+                                <label class="switch">
+                                    <input type="checkbox" id="show-illustration" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-group">
+                                <label for="illustration-source">Illustration Source<span class="tooltip">Choose between AI-generated images or stock photos.</span></label>
+                                <select id="illustration-source" name="illustration-source">
+                                    <option value="ai">AI Generated (Imagen)</option>
+                                    <option value="unsplash">Stock Photos (Unsplash)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group full-width">
+                            <label for="illustration-style">Image Style<span class="tooltip">Suggest a style for the illustration.</span></label>
+                            <select id="illustration-style" name="illustration-style">
+                                </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Main Action Buttons -->
+                <div class="button-container">
+                    <button type="button" class="prompts-button" id="curated-prompts-btn">Curated Prompts</button>
+                    <button type="button" class="loom-button" id="open-loom-btn">Open The Loom</button>
+                    <button type="button" class="generate-button">Generate</button>
+                    <div class="admin-section">
+                        <button type="button" class="history-link">My Bookshelf</button>
+                        <button type="button" class="actions-link">Story Actions</button>
+                        <button type="button" class="guide-link">User Guide</button>
+                        <button type="button" class="faq-link">FAQ</button>
+                        <button type="button" class="disclaimer-link">Disclaimer</button>
+                        <button type="button" class="admin-toggle">Settings</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Right Page Content -->
+        <div class="page right-page" id="right-page">
+             <h2 id="story-title">
+                <span id="story-title-text">Your Creation Will Appear Here</span>
+            </h2>
+            <div id="header-illustration"></div>
+            <div id="story-content-wrapper">
+                <div class="page-content" id="story-content" aria-live="polite">
+                    <p>Select your preferences on the left and click "Generate" to begin.</p>
+                </div>
+                 <div class="page-content" id="chat-content" aria-live="polite" style="display: none;">
+                    </div>
+                 <div class="page-content" id="map-content" style="display: none; height: 100%;">
+                    <div id="map-container">Map will be displayed here</div>
+                </div>
+                <div class="page-content" id="agent-content" style="display: none;">
+                    <!-- Agent's plan and results will be displayed here -->
+                </div>
+            </div>
+            <div class="story-footer">
+                <button class="clear-story-button" aria-label="Clear current story" title="Clear the current story from the page">Clear</button>
+                <div class="story-footer-actions">
+                    <button class="summary-button" aria-label="Show story summary" title="View the settings used for this story">Summary</button>
+                    <button class="save-story-button" aria-label="Save current story" title="Save changes to the current story" style="display: none;">Save</button>
+                    <button class="display-button" aria-label="Open display and accessibility settings" title="Change display and accessibility settings">Display</button>
+                    <button class="theater-button" aria-label="Enter Theater Mode" title="Enter Theater Mode">Theater</button>
+                    <button class="continue-button" aria-label="Continue this story" style="display: none;" title="Continue writing this story with AI">Continue</button>
+                    <button class="read-aloud-button" aria-label="Read story aloud" title="Read the story aloud">Read</button>
+                </div>
+            </div>
+            <div class="chat-footer" style="display: none;">
+                <button type="button" class="chat-theater-button" id="chat-theater-btn">Theater</button>
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button type="button" id="save-chat-btn" class="save-chat-button">Save</button>
+                <button type="button" id="clear-chat-btn" class="clear-chat-button">Clear</button>
+                <button id="chat-send-btn">Send</button>
+            </div>
+             <div class="agent-footer" style="display: none;">
+                <button class="clear-story-button" id="clear-agent-btn">Clear Workspace</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="glossary-modal" style="display: none;">
+        <h4 id="glossary-word"></h4>
+        <p id="glossary-phonetic"></p>
+        <p id="glossary-definition"></p>
+    </div>
+
+    <div class="modal-overlay" id="loom-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="loom-modal-close-btn" role="button" aria-label="Close loom settings">&times;</span>
+            <h2>The Loom: Weave Your Narrative <button class="info-button" id="loom-info-btn" aria-label="More information about loom settings">ⓘ</button></h2>
+            <div class="modal-body">
+                <div class="control-grid">
+                    <div class="control-group">
+                        <label for="tone">Tone<span class="tooltip">Set the author's attitude toward the subject (e.g., humorous, serious).</span></label>
+                        <select id="tone" name="tone">
+                            <option value="">Default</option>
+                            <option value="humorous">Humorous</option>
+                            <option value="serious">Serious</option>
+                            <option value="suspenseful">Suspenseful</option>
+                            <option value="whimsical">Whimsical</option>
+                            <option value="formal">Formal</option>
+                            <option value="inspirational">Inspirational</option>
+                            <option value="ominous">Ominous</option>
+                            <option value="satirical">Satirical</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="mood">Mood<span class="tooltip">Define the emotional atmosphere the text should evoke in the reader (e.g., tense, joyful).</span></label>
+                        <select id="mood" name="mood">
+                            <option value="">Default</option>
+                            <option value="joyful">Joyful</option>
+                            <option value="tense">Tense</option>
+                            <option value="peaceful">Peaceful</option>
+                            <option value="melancholy">Melancholy</option>
+                            <option value="energetic">Energetic</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="pov">Point of View<span class="tooltip">Choose the narrator's perspective (e.g., first-person 'I', third-person 'they').</span></label>
+                        <select id="pov" name="pov">
+                            <option value="">Default</option>
+                            <option value="first-person">First-Person (I, we)</option>
+                            <option value="third-person-limited">Third-Person Limited</option>
+                            <option value="third-person-omniscient">Third-Person Omniscient</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="pacing">Pacing<span class="tooltip">Control the speed of the narrative, from fast-paced action to slow description.</span></label>
+                        <select id="pacing" name="pacing">
+                            <option value="">Default</option>
+                            <option value="fast-paced">Fast-Paced</option>
+                            <option value="slow-paced">Slow and Descriptive</option>
+                        </select>
+                    </div>
+                </div>
+                <hr class="separator">
+                <h3>Advanced Controls</h3>
+                <div class="fiction-only">
+                    <div class="control-grid">
+                        <div class="control-group">
+                            <label for="char-name">Main Character Name<span class="tooltip">Give your main character a name. Click the magic wand for a suggestion!</span></label>
+                            <div class="input-with-button">
+                                <input type="text" id="char-name" placeholder="e.g., Elara, Jax">
+                                <button type="button" id="suggest-name-btn" title="Suggest a name">✨</button>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="char-archetype">Character Archetype<span class="tooltip">Choose a classic role for your character, like 'The Hero' or 'The Mentor'.</span></label>
+                            <select id="char-archetype" name="char-archetype">
+                                <option value="">Default</option>
+                                <option value="The Hero">The Hero</option>
+                                <option value="The Mentor">The Mentor</option>
+                                <option value="The Trickster">The Trickster</option>
+                                <option value="The Rebel">The Rebel</option>
+                                <option value="The Explorer">The Explorer</option>
+                                <option value="The Everyman">The Everyman</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group full-width">
+                        <label for="char-traits">Character Traits<span class="tooltip">Describe your character's personality (e.g., brave, curious, witty).</span></label>
+                        <input type="text" id="char-traits" placeholder="e.g., brave, curious, witty">
+                    </div>
+                    <div class="control-group full-width">
+                        <label for="char-goal">Character Goal<span class="tooltip">What is the main objective your character is trying to achieve?</span></label>
+                        <input type="text" id="char-goal" placeholder="e.g., to find a lost artifact">
+                    </div>
+                </div>
+                <div class="control-group full-width">
+                    <label for="plot-points">Key Plot Points (comma-separated)<span class="tooltip">Outline major events you want to happen in the story.</span></label>
+                    <textarea id="plot-points" rows="2" placeholder="e.g., a secret map is found, a chase through the city, a final confrontation"></textarea>
+                </div>
+                <div class="control-group full-width">
+                    <label>Literary Devices to Include<span class="tooltip">Ask the AI to intentionally include specific literary techniques.</span></label>
+                    <div class="device-checkboxes">
+                        <label><input type="checkbox" name="literary-device" value="Foreshadowing"> Foreshadowing</label>
+                        <label><input type="checkbox" name="literary-device" value="Irony"> Irony</label>
+                        <label><input type="checkbox" name="literary-device" value="Metaphor"> Metaphor</label>
+                        <label><input type="checkbox" name="literary-device" value="Symbolism"> Symbolism</label>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="loom-close-button" class="modal-button" style="margin-top: 20px;">Save and Close</button>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="revision-loom-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="revision-loom-close-btn" role="button" aria-label="Close revision loom">&times;</span>
+            <h2>The Revision Loom <button class="info-button" id="revision-guide-btn" aria-label="More information about revision tools">ⓘ</button></h2>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label for="revision-goal">Revision Goal<span class="tooltip">Select the primary objective for the revision, like expanding or shortening the text.</span></label>
+                    <select id="revision-goal">
+                        <option value="continue">Continue Writing</option>
+                        <option value="expand">Expand on Selection</option>
+                        <option value="shorten">Shorten Selection</option>
+                        <option value="improve-dialogue">Improve Dialogue</option>
+                        <option value="increase-suspense">Increase Suspense</option>
+                        <option value="rewrite-as-screenplay">Rewrite as Screenplay</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="revision-style">Revision Style<span class="tooltip">Choose a stylistic approach for the AI to follow, such as making the text more descriptive.</span></label>
+                    <select id="revision-style">
+                        <option value="">Default</option>
+                        <option value="more-descriptive">More Descriptive</option>
+                        <option value="show-dont-tell">Show, Don't Tell</option>
+                        <option value="more-formal">More Formal Tone</option>
+                        <option value="more-concise">More Concise</option>
+                    </select>
+                </div>
+                <div class="control-grid">
+                    <div class="control-group">
+                        <label for="revision-tone">Tone<span class="tooltip">Set the author's attitude toward the subject (e.g., humorous, serious).</span></label>
+                        <select id="revision-tone" name="revision-tone">
+                            <option value="">Default</option>
+                            <option value="humorous">Humorous</option>
+                            <option value="serious">Serious</option>
+                            <option value="suspenseful">Suspenseful</option>
+                            <option value="whimsical">Whimsical</option>
+                            <option value="formal">Formal</option>
+                            <option value="inspirational">Inspirational</option>
+                            <option value="ominous">Ominous</option>
+                            <option value="satirical">Satirical</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="revision-mood">Mood<span class="tooltip">Define the emotional atmosphere the text should evoke in the reader (e.g., tense, joyful).</span></label>
+                        <select id="revision-mood" name="revision-mood">
+                            <option value="">Default</option>
+                            <option value="joyful">Joyful</option>
+                            <option value="tense">Tense</option>
+                            <option value="peaceful">Peaceful</option>
+                            <option value="melancholy">Melancholy</option>
+                            <option value="energetic">Energetic</option>
+                        </select>
+                    </div>
+                </div>
+                <hr class="separator">
+                <h3>Director's Notes</h3>
+                <textarea id="director-notes" rows="4" placeholder="Add specific instructions for the AI, e.g., 'Focus on the character's internal conflict here.'"></textarea>
+                <div class="control-group" style="margin-top: 10px;">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="include-director-notes">
+                        Include Director's Notes as context for this revision.
+                    </label>
+                </div>
+            </div>
+            <button type="button" class="modal-button" id="revise-btn" style="margin-top: 20px;">Revise with AI</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="loom-help-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="loom-help-close-btn" role="button" aria-label="Close loom help">&times;</span>
+            <div class="modal-body" id="loom-help-content">
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="revision-guide-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="revision-guide-close-btn">&times;</span>
+            <h2>Literary Tools Guide</h2>
+            <div id="revision-guide-content" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="disclaimer-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="disclaimer-modal-close-btn" role="button" aria-label="Close disclaimer">&times;</span>
+            <h2>AI Generation Disclaimer</h2>
+            <p>AI Story Weaver uses advanced language models to generate content based on your selections. While it strives to be accurate, it is not perfect and may sometimes contain inaccuracies or unexpected results.</p>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="warning-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="warning-modal-close-btn" role="button" aria-label="Close warning">&times;</span>
+            <h2 id="warning-title">Warning</h2>
+            <p id="warning-text"></p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settings-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="settings-modal-close-btn" role="button" aria-label="Close settings">&times;</span>
+            <h2>Settings</h2>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label for="app-theme">App Theme</label>
+                    <select id="app-theme">
+                        <option value="blue">Blue</option>
+                        <option value="brown">Brown</option>
+                        <option value="green">Green</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="dev-mode-toggle">Development Mode (Simulated API)<span class="tooltip">Bypass live API calls to avoid rate limits during development.</span></label>
+                    <label class="switch">
+                        <input type="checkbox" id="dev-mode-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <hr class="separator">
+                <h3>API Keys</h3>
+                <p>API keys are stored securely in your browser's local storage and are never transmitted elsewhere.</p>
+                <div class="api-key-group" id="gemini-key-group">
+                    <h4>Google AI (Gemini)</h4>
+                    <p>Required for Gemini models and AI-generated illustrations (Imagen).</p>
+                    <input type="password" id="gemini-api-key" name="gemini-api-key" placeholder="Enter Gemini API key" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="google-maps-key-group">
+                    <h4>Google Maps</h4>
+                    <p>Required for the "Maps" feature.</p>
+                    <input type="password" id="google-maps-api-key" name="google-maps-api-key" placeholder="Enter Google Maps API key" autocomplete="new-password">
+                    <input type="text" id="google-maps-map-id" name="google-maps-map-id" placeholder="Enter Google Maps Map ID" style="margin-top: 10px;">
+                </div>
+                 <div class="api-key-group" id="openai-key-group">
+                    <h4>OpenAI</h4>
+                    <p>Required for OpenAI models (e.g., GPT-4o).</p>
+                    <input type="password" id="openai-api-key" name="openai-api-key" placeholder="Enter OpenAI API key" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="deepseek-key-group">
+                    <h4>Deepseek</h4>
+                    <p>Required for Deepseek models.</p>
+                    <input type="password" id="deepseek-api-key" name="deepseek-api-key" placeholder="Enter Deepseek API key" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="grok-key-group">
+                    <h4>Grok</h4>
+                    <p>Required for Grok models.</p>
+                    <input type="password" id="grok-api-key" name="grok-api-key" placeholder="Enter Grok API key" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="huggingface-key-group">
+                    <h4>Hugging Face</h4>
+                    <p>Required for open-source models (e.g., Llama, Zephyr).</p>
+                    <input type="password" id="huggingface-api-key" name="huggingface-api-key" placeholder="Enter Hugging Face Token" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="freesound-key-group">
+                    <h4>Freesound</h4>
+                    <p>Required for the "Cafe" music feature.</p>
+                    <input type="password" id="freesound-api-key" name="freesound-api-key" placeholder="Enter Freesound API key" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="spotify-key-group">
+                    <h4>Spotify</h4>
+                    <p>Required for the "Music" research subject.</p>
+                    <input type="password" id="spotify-client-id" name="spotify-client-id" placeholder="Enter Spotify Client ID" autocomplete="new-password">
+                    <input type="password" id="spotify-client-secret" name="spotify-client-secret" placeholder="Enter Spotify Client Secret" style="margin-top: 10px;">
+                </div>
+                <div class="api-key-group" id="unsplash-key-group">
+                    <h4>Unsplash</h4>
+                    <p>Required for the "Stock Photos" illustration source.</p>
+                    <input type="password" id="unsplash-api-key" name="unsplash-api-key" placeholder="Enter Unsplash API key" autocomplete="new-password">
+                </div>
+                <div class="api-key-group" id="nasa-key-group">
+                    <h4>NASA</h4>
+                    <p>Required for the "Astronomy" research subject.</p>
+                    <input type="password" id="nasa-api-key" name="nasa-api-key" placeholder="Enter NASA API key" autocomplete="new-password">
+                </div>
+                <button type="button" class="modal-button" id="api-key-manager-btn" style="margin-top: 10px; background-color: var(--accent-color);">Open API Key Manager</button>
+                <button type="button" class="clear-keys-link" style="margin-top: 10px;">Clear All Saved Keys</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="api-key-manager-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="api-key-manager-close-btn">&times;</span>
+            <div class="modal-header">
+                <h2>API Key Manager</h2>
+                <button id="print-keys-btn" class="modal-button">Print Report</button>
+            </div>
+            <div id="api-key-table-wrapper" class="modal-body">
+                <p>This report provides a summary of all API keys currently saved in your browser's local storage for this application.</p>
+                <table id="api-key-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>API Key / ID</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated by script.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="faq-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="faq-modal-close-btn" role="button" aria-label="Close FAQ dialog">&times;</span>
+            <h2>Frequently Asked Questions</h2>
+            <div class="modal-body" id="faq-content">
+                </div>
+        </div>
+    </div>
+
+     <div class="modal-overlay" id="summary-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="summary-modal-close-btn" role="button" aria-label="Close summary">&times;</span>
+            <h2>Story Summary</h2>
+            <div id="summary-content" class="modal-body"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="actions-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="actions-modal-close-btn" role="button" aria-label="Close actions menu">&times;</span>
+            <div class="modal-body">
+                <h2>Story Actions</h2>
+                <button type="button" id="copy-text-button" class="modal-button" style="margin-bottom: 10px;">Copy Story Text</button>
+                <button type="button" id="copy-html-button" class="modal-button" style="margin-bottom: 10px;">Copy Story with HTML</button>
+                <button type="button" id="print-button" class="modal-button" style="margin-bottom: 10px;">Print Story</button>
+                <button type="button" id="pdf-button" class="modal-button">Save as PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay right-aligned" id="prompts-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="prompts-modal-close-btn" role="button" aria-label="Close prompts">&times;</span>
+            <h2>Curated Prompts</h2>
+            <div id="prompts-list" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="guide-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="guide-modal-close-btn" role="button" aria-label="Close user guide">&times;</span>
+            <div class="modal-header">
+                <h2>User Guide</h2>
+                <button class="guide-print-btn">Print Guide</button>
+            </div>
+            <div class="guide-tabs">
+                <button class="guide-tab active" data-guide="story">Story Weaver</button>
+                <button class="guide-tab" data-guide="research">Research</button>
+                <button class="guide-tab" data-guide="novelist">Novelist</button>
+                <button class="guide-tab" data-guide="chat">Chat</button>
+                <button class="guide-tab" data-guide="maps">Maps</button>
+                <button class="guide-tab" data-guide="cafe">Cafe</button>
+            </div>
+            <div id="guide-content" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="history-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="bookshelf-header">
+                <h2>My Bookshelf</h2>
+                <span id="bookshelf-counter"></span>
+            </div>
+            <span class="modal-close" id="history-modal-close-btn" role="button" aria-label="Close history">&times;</span>
+            <div id="history-list" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <div class="footer-section">
+                    <button type="button" id="export-library-btn" class="modal-button" title="Save all stories from your Bookshelf and Archive to a backup file.">Export Library</button>
+                    <button type="button" id="import-library-btn" class="modal-button" title="Load stories from a backup file. This will overwrite your current library.">Import Library</button>
+                    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                </div>
+                <div class="footer-section">
+                    <button type="button" id="archive-link" class="modal-button">Open Archive Vault</button>
+                    <button type="button" id="clear-history-button">Clear Bookshelf</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="archive-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="bookshelf-header">
+                <h2>Archive Vault</h2>
+                <span id="archive-counter"></span>
+            </div>
+            <span class="modal-close" id="archive-modal-close-btn" role="button" aria-label="Close archive">&times;</span>
+            <div id="archive-list" class="modal-body">
+                </div>
+             <button type="button" id="clear-archive-button">Clear Archive</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="music-menu-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="music-menu-close-btn">&times;</span>
+            <div class="music-menu-header">
+                <h2>Cafe Music Menu</h2>
+                <button type="button" id="music-mix-btn">Start Mix</button>
+            </div>
+            <div id="music-menu-list" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="persona-menu-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="persona-menu-close-btn">&times;</span>
+            <div class="persona-menu-header">
+                <h2>Select a Persona <button class="info-button" id="persona-info-btn">ⓘ</button></h2>
+            </div>
+            <div id="persona-menu-list" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="persona-info-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="persona-info-close-btn">&times;</span>
+            <h2>About AI Personas</h2>
+            <div id="persona-info-content" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay left-aligned" id="display-settings-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="display-settings-close-btn" role="button" aria-label="Close display settings">&times;</span>
+            <h2>Display & Accessibility</h2>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label for="dyslexia-preset-toggle">Dyslexia Friendly Preset</label>
+                    <label class="switch">
+                        <input type="checkbox" id="dyslexia-preset-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <hr class="separator">
+                <h3>Audio</h3>
+                <div class="control-grid">
+                    <div class="control-group">
+                        <label for="karaoke-toggle">Karaoke Mode</label>
+                        <label class="switch">
+                            <input type="checkbox" id="karaoke-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label for="highlight-style">Highlight Style</label>
+                        <select id="highlight-style">
+                            <option value="yellow">Yellow</option>
+                            <option value="#aadeff">Blue</option>
+                            <option value="#b5ffb8">Green</option>
+                            <option value="line">Line</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="voice-select">Speaking Voice</label>
+                    <select id="voice-select"></select>
+                </div>
+                <div class="control-group">
+                    <label for="voice-speed">Voice Speed (<span id="voice-speed-label">1</span>x)</label>
+                    <input type="range" id="voice-speed" min="0.5" max="2" value="1" step="0.1">
+                </div>
+                <hr class="separator">
+                <h3>Visuals</h3>
+                <div class="control-grid">
+                    <div class="control-group">
+                        <label for="font-size">Font Size (<span id="font-size-label">1.1</span>rem)</label>
+                        <input type="range" id="font-size" min="0.8" max="2" value="1.1" step="0.1">
+                    </div>
+                    <div class="control-group">
+                        <label for="text-spacing">Text Spacing (<span id="text-spacing-label">1.7</span>)</label>
+                        <input type="range" id="text-spacing" min="1.5" max="2.5" value="1.7" step="0.1">
+                    </div>
+                </div>
+                <div class="control-grid">
+                    <div class="control-group">
+                        <label for="font-type">Font Type</label>
+                        <select id="font-type">
+                            <option value="'Georgia', serif">Georgia</option>
+                            <option value="'Lexend', sans-serif">Lexend</option>
+                            <option value="'Nunito', sans-serif">Nunito</option>
+                            <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                            <option value="Arial, Helvetica, sans-serif">Arial</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="bg-color">Page Background</label>
+                        <select id="bg-color">
+                            <option value="#ffffff">Default (White)</option>
+                            <option value="#f3e5ab">Sepia</option>
+                            <option value="#d1d1d1">Slate Gray</option>
+                            <option value="#222222">Dark</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="theater-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="theater-modal-close-btn">&times;</span>
+            <div class="modal-body" id="theater-body">
+                <h2 id="theater-title"></h2>
+                <div id="theater-illustration"></div>
+                <div id="theater-story-content"></div>
+            </div>
+            <div class="theater-footer">
+                 <button class="read-aloud-button" id="theater-read-aloud-btn">Read</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="chat-theater-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="chat-theater-modal-close-btn">&times;</span>
+            <div id="chat-theater-content" class="modal-body">
+                </div>
+            <div class="chat-theater-footer">
+                <textarea id="chat-theater-input" placeholder="Type your message..." rows="2"></textarea>
+                <button type="button" id="chat-theater-save-btn" class="save-chat-button">Save</button>
+                <button type="button" id="chat-theater-clear-btn" class="clear-chat-button">Clear</button>
+                <button id="chat-theater-send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="save-chat-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="save-chat-modal-close-btn">&times;</span>
+            <h2>Name Your Chat</h2>
+            <div class="modal-body">
+                <p>Enter a title to save this conversation to your bookshelf.</p>
+                <input type="text" id="chat-title-input" placeholder="e.g., Limerick Practice, Pirate Chat">
+            </div>
+            <button type="button" id="confirm-save-chat-btn" class="modal-button" style="margin-top: 20px;">Save to Bookshelf</button>
+        </div>
+    </div>
+
+    <audio id="background-music-player" loop></audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>
